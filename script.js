@@ -1,5 +1,15 @@
+idCounter =0;
+
+
 const playerContainer = document.getElementById("all-players-container");
 const newPlayerFormContainer = document.getElementById("new-player-form");
+const inputidentifi = document.querySelector('#identifi');
+const inputname = document.querySelector('#names');
+const inputbreed = document.querySelector('#breed');
+const textareastatuss = document.querySelector('#statuss');
+const inputimg = document.querySelector('#img');
+
+
 
 // Add your cohort name to the cohortName variable below, replacing the 'COHORT-NAME' placeholder
 const cohortName = "2308-ACC-WEB-PT-B";
@@ -11,6 +21,12 @@ const state = {
     singlePlayer: {},
 };
 
+userInput.addEventListener('submit', (event) => {
+    event.preventDefault();///
+    addTask();
+
+    console.log('new event submit');
+});
 /**
  * It fetches all players from the API and returns them
  * @returns An array of objects.
@@ -76,21 +92,7 @@ const removePlayer = async (playerId) => {
 };
 
 /**
- * It takes an array of player objects, loops through them, and creates a string of HTML for each
- * player, then adds that string to a larger string of HTML that represents all the players.
- *
- * Then it takes that larger string of HTML and adds it to the DOM.
- *
- * It also adds event listeners to the buttons in each player card.
- *
- * The event listeners are for the "See details" and "Remove from roster" buttons.
- *
- * The "See details" button calls the `fetchSinglePlayer` function, which makes a fetch request to the
- * API to get the details for a single player.
- *
- * The "Remove from roster" button calls the `removePlayer` function, which makes a fetch request to
- * the API to remove a player from the roster.
- *
+ 
  * The `fetchSinglePlayer` and `removePlayer` functions are defined in the
  * @param playerList - an array of player objects
  * @returns the playerContainerHTML variable.
@@ -101,16 +103,20 @@ const renderAllPlayers = (playerList) => {
             playerContainer.innerHTML = "<li>No players.</li>";
             return;
         }
-
+//Get all data from url 
         const playerCards = playerList.map((player) => {
-            const li = document.createElement("li");
-            li.innerHTML = `
+            idCounter ++;
+            const li = document.createElement("div");
+            li.innerHTML = `<div class="task-container" id="${idCounter}">
                 <img src="${player.imageUrl}" alt=${player.name}">
                 <p>Name: ${player.name}</p>
                 <p>Breed: ${player.breed}</p>
                 <p>Status: ${player.status}</p>
                 <p>Team: ${player.teamId}</p>
-            `;
+                <input type="checkbox">
+                <img src="delete.png" class="closeBtn">
+            
+            </div>`;
             const seeDetailsButton = document.createElement("button");
             seeDetailsButton.textContent = "See details";
             seeDetailsButton.addEventListener("click", async () => {
@@ -118,7 +124,7 @@ const renderAllPlayers = (playerList) => {
             });
 
             const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Remove from roster";
+            deleteButton.textContent = "DELETE";
             deleteButton.addEventListener("click", async () => {
                 await removePlayer(player);
                 fetchAllPlayers();
@@ -135,71 +141,100 @@ const renderAllPlayers = (playerList) => {
 /**
  * It renders a form to the DOM, and when the form is submitted, it adds a new player to the database,
  * fetches all players from the database, and renders them to the DOM.
+ * In this point I can no do how to update and delete data from Url 
  */
-const renderNewPlayerForm = () => {
-    try {
-        const form = document.createElement("form");
-        form.classList.add("addPlayer");
 
-        const nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.placeholder = "Name";
-        nameInput.name = "name";
 
-        const breedInput = document.createElement("input");
-        breedInput.type = "text";
-        breedInput.placeholder = "Breed";
-        breedInput.name = "breed";
 
-        const statusInput = document.createElement("input");
-        statusInput.type = "text";
-        statusInput.placeholder = "Field or benched";
-        statusInput.name = "status";
+// I create this fuction for insert new player 
+let addTask = () => {
+    idCounter++;//count Id
 
-        const teamInput = document.createElement("input");
-        teamInput.type = "text";
-        teamInput.placeholder = "Team Id";
-        teamInput.name = "teamId";
+    let newValue = inputidentifi.value;
+    let newValuedates = inputname.value;
+    let newValueTimes = inputbreed.value;
+    let newAdress = textareastatuss.value;
+    let newDescription = inputimg.value;
+//POST add new elemt 
 
-        const addPlayerButton = document.createElement("button");
-        addPlayerButton.textContent = "Add player";
+    list.innerHTML += `<div class="task-container" id="${idCounter}">
+    <label>IMG:</label>
+    <td>
+    ${newDescription}
+    </td>
+    <label >NAME:</label>
+    <td>
+        ${newValue}
+    </td>
+    <label>BREED:</label>
+    <td>
+    ${newValuedates}
+    </td>
+    <label>STATUS:</label>
+    <td>
+    ${newValueTimes}
+    </td>
+    <label>TEAM:</label>
+    <td>
+    ${newAdress}
+    </td>
+   
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
 
-            const newPlayer = {
-                name: nameInput.value,
-                breed: breedInput.value,
-                status: statusInput.value,
-                team: teamInput.value,
-            };
 
-            try {
-                const result = await addNewPlayer(newPlayer);
-                console.log(`New player added: ${result}`);
+    <input type="checkbox">
+    <img src="delete.png" class="closeBtn">
 
-                const updatedPlayerList = await fetchAllPlayers();
-                renderAllPlayers(updatedPlayerList);
-            } catch (err) {
-                console.error("Uh oh, trouble adding new player!", err);
-            }
-        });
+</div>`
+///clear for a new event
+inputidentifi.value = '';
+inputname.value ='';
+inputbreed.value= '';
+textareastatuss.value='';
+inputimg.value='';
 
-        form.append(nameInput, breedInput, statusInput, teamInput, addPlayerButton);
 
-        newPlayerFormContainer.appendChild(form);
-    } catch (err) {
-        console.error("Uh oh, trouble rendering the new player form!", err);
-    }
+    updateStats();
+
+
 };
+
+list.addEventListener('click', (Event) => {
+
+    if (Event.srcElement.nodeName == 'INPUT') {
+        updateStats();
+    } else if (Event.srcElement.nodeName == 'IMG') {
+        deleteTask(Event.srcElement.parentNode.id);
+    }
+});
+//update 
+//count length 
+//
+let updateStats = () => {
+    let element = list.querySelectorAll('div');
+    let checkbox = list.querySelectorAll('input[type="checkbox"]:checked');
+
+    stats.innerHTML = `<p>:Pending Events ${element.length} Complete:${checkbox.length}</p>`
+
+};
+///DELETE
+let deleteTask = (id) => {
+    let taskToDelete = document.getElementById(id);
+    list.removeChild(taskToDelete);
+    updateStats();
+}
+
 
 const init = async () => {
     const players = await fetchAllPlayers();
     renderAllPlayers(players);
 
-    renderNewPlayerForm();
+    addTask();
 };
 
 init();
+
+
+
 
 

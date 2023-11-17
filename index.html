@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PuppyBowl</title>
   <!-- import JavaScript -->
-  <script defer src="index.js"></script>
+ 
 
   <!-- import CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -21,22 +21,25 @@
   <!-- form to add new players -->
 
   <form action="#" id="userInput">
+
     <input type="number" id="identifi">
     <input type="text" placeholder="Write you Name" id="names" autofocus>
     <input type="text" placeholder="write you Breed" id="breed">
-
     <input type="text"  placeholder=" write you Status" id="statuss">
     <input type="file" id="img" name="img" accept="image/*">
     <input type="submit" value="+" id="addBtn" >
 </form>
 
+    <div id="stats">
+    </div>
 
   <div id="player-form" class="task-container">
-
   </div>
+  
+ <div id="list" class="list-container"> 
+    </div>
   <div id="all-players-container"   class="new-players">
-
-    
+  
   </div>
 
   <div id="stats">
@@ -48,5 +51,6 @@
   <!-- container for all players -->
 
 </body>
+<script  src="script.js"></script>
 
 </html>
