@@ -3,11 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuppyBowl</title>
   <!-- import JavaScript -->
-  <script defer src="script.js"></script>
+  <script defer src="index.js"></script>
 
   <!-- import CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -17,11 +16,36 @@
 
 <body>
 
-  <!-- form to add new players -->
-  <div id="new-player-form"></div>
 
+
+  <!-- form to add new players -->
+
+  <form action="#" id="userInput">
+    <input type="number" id="identifi">
+    <input type="text" placeholder="Write you Name" id="names" autofocus>
+    <input type="text" placeholder="write you Breed" id="breed">
+
+    <input type="text"  placeholder=" write you Status" id="statuss">
+    <input type="file" id="img" name="img" accept="image/*">
+    <input type="submit" value="+" id="addBtn" >
+</form>
+
+
+  <div id="player-form" class="task-container">
+
+  </div>
+  <div id="all-players-container"   class="new-players">
+
+    
+  </div>
+
+  <div id="stats">
+    <!--tareas pendientes:5 completadas: 3-->
+
+    </div>
+
+ 
   <!-- container for all players -->
-  <div id="all-players-container"></div>
 
 </body>
 
